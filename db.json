@@ -1,0 +1,42 @@
+{
+    "categories": [
+        {
+            "name": "Classiques",
+            "commands": [
+                "ping",
+                "help"
+            ]
+        }
+    ],
+    "commands": [
+        {
+            "name": "help",
+            "description": "Renvoie la liste des commandes",
+            "options": [
+                {
+                    "choices": [
+                        {
+                            "name": "Classiques",
+                            "value": "Classiques"
+                        },
+                        {
+                            "name": "Trading",
+                            "value": "Trading"
+                        }
+                    ],
+                    "type": 3,
+                    "name": "categorie",
+                    "description": "La categorie sur laquelle vous voulez des précisions",
+                    "required": false
+                }
+            ],
+            "perms": "everyone"
+        },
+        {
+            "name": "ping",
+            "description": "Répond pong",
+            "options": [],
+            "perms": "everyone"
+        }
+    ]
+}
