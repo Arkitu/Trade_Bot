@@ -1,7 +1,8 @@
-import { Client, Intents, Collection, MessageActionRow, MessageButton } from 'discord.js';
+import { Client, Intents, Collection } from 'discord.js';
 import { readdirSync } from 'fs';
 import { JsonDB } from 'node-json-db';
 import { Config } from 'node-json-db/dist/lib/JsonDBConfig.js';
+import { createHash } from 'crypto';
 
 // Import config and db
 const config = new JsonDB(new Config("config", true, true, '/'));
@@ -21,6 +22,66 @@ export async function log_error(msg) {
 // Randomize the main color of the bot
 export async function get_main_color() {
     return config.getData(`/main_colors[${Math.floor(Math.random() * config.getData(`/main_colors`).length)}]`);
+}
+
+// Hash a string
+export function hash(str) {
+	return createHash('md5').update(str).digest('hex');
+}
+
+// Add user to db
+export function add_user(id) {
+	db.push(`/users/${hash(id)}`, {
+		wallet: {
+			"59bb9c6f-a67b-4759-bc25-3d3dcdb49d51": 0
+		}
+	});
+	return hash(id);
+}
+
+// Get user from db
+export function get_user(id, create = false) {
+	if (!db.getData(`/users`).hasOwnProperty(hash(id))) {
+		if (create) {
+			add_user(id);
+		} else {
+			return undefined;
+		}
+	}
+	return db.getData(`/users/${hash(id)}`);
+}
+
+// Get token from db
+export function get_token(id) {
+	let token;
+	if (id == "coins") {
+		token = db.getData("/tokens/59bb9c6f-a67b-4759-bc25-3d3dcdb49d51");
+	} else {
+		token = db.getData("/tokens/" + id);
+	}
+	token = {
+		...token,
+		price: token.total_price / token.total_quantity
+	}
+	return token;
+}
+
+// Get str amount of tokens
+export function get_str_amount(amount, token_id, abbr = true, code = false) {
+	let token = get_token(token_id);
+	let type;
+	if (amount == 1) {
+		type = "sing";
+	} else {
+		type = "plur";
+	}
+	if (abbr) {
+		type += "_abbr";
+	}
+	if (code) {
+		return `\`${amount}\` ${token.name[type]}`;
+	}
+	return `${amount} ${token.name[type]}`;
 }
 
 // Create a new client instance
