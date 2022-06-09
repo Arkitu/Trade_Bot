@@ -17,7 +17,12 @@ export async function execute(interaction, config, db) {
         user: interaction.options.getUser('user') || interaction.user
     }
 
-    let db_user = get_user(opt.user.id);
+    let db_user = get_user(opt.user.id, opt.user.id == interaction.user.id);
+
+    if (!db_user) {
+        interaction.editReply(`:warning: ${opt.user.username} n'est pas enregistré dans ma base de données.`);
+        return;
+    }
 
     let total_in_coins = db_user.wallet["59bb9c6f-a67b-4759-bc25-3d3dcdb49d51"];
     let str_wallet = "";
@@ -28,7 +33,7 @@ export async function execute(interaction, config, db) {
         total_in_coins += amount * token.price;
     }
 
-    str_wallet += `\nValeur totale équivalente à ${get_str_amount(total_in_coins / get_token("coins").price, "coins")}`
+    str_wallet += `\nValeur totale équivalente à ${get_str_amount(total_in_coins / get_token("coins").price, "coins", true, true)}`;
 
     let embed = new MessageEmbed()
         .setColor(await get_main_color())

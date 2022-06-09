@@ -3,6 +3,7 @@ import { readdirSync } from 'fs';
 import { JsonDB } from 'node-json-db';
 import { Config } from 'node-json-db/dist/lib/JsonDBConfig.js';
 import { createHash } from 'crypto';
+import { Token } from './libs/Token.js';
 
 // Import config and db
 const config = new JsonDB(new Config("config", true, true, '/'));
@@ -20,7 +21,7 @@ export async function log_error(msg) {
 }
 
 // Randomize the main color of the bot
-export async function get_main_color() {
+export function get_main_color() {
     return config.getData(`/main_colors[${Math.floor(Math.random() * config.getData(`/main_colors`).length)}]`);
 }
 
@@ -53,17 +54,7 @@ export function get_user(id, create = false) {
 
 // Get token from db
 export function get_token(id) {
-	let token;
-	if (id == "coins") {
-		token = db.getData("/tokens/59bb9c6f-a67b-4759-bc25-3d3dcdb49d51");
-	} else {
-		token = db.getData("/tokens/" + id);
-	}
-	token = {
-		...token,
-		price: token.total_price / token.total_quantity
-	}
-	return token;
+	return new Token(id, client, db, config);
 }
 
 // Get str amount of tokens

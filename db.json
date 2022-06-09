@@ -3,42 +3,98 @@
         "59bb9c6f-a67b-4759-bc25-3d3dcdb49d51": {
             "type": "custom",
             "data": {
-                "image": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/twitter/248/coin_1fa99.png"
+                "image": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/twitter/248/coin_1fa99.png",
+                "creator": "982618720675446784"
             },
             "name": {
-                "sing": "coin",
-                "plur": "coins",
+                "sing": "Coin",
+                "plur": "Coins",
                 "sing_abbr": "🪙",
                 "plur_abbr": "🪙"
             },
-            "available": 0,
             "sellable": false,
-            "total_price": 1000000,
             "total_quantity": 1000000
         },
         "24f6bab7-8f26-4bda-9e88-76b5b5d00255": {
             "type": "custom",
-            "data": {},
+            "data": {
+                "image": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/twitter/322/crown_1f451.png",
+                "creator": "982618720675446784"
+            },
             "name": {
                 "sing": "Trade Bot Possession's token",
                 "plur": "Trade Bot Possession's tokens",
                 "sing_abbr": "👑",
                 "plur_abbr": "👑"
             },
-            "available": 0,
             "sellable": false,
-            "total_price": 0,
             "total_quantity": 1
+        },
+        "4a59bc40-b474-4625-b06a-acec9d4f424f": {
+            "type": "custom",
+            "data": {
+                "image": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/twitter/322/crown_1f451.png",
+                "creator": "694235386658160760"
+            },
+            "name": {
+                "sing": "Test Token",
+                "plur": "Test Tokens",
+                "sing_abbr": "⚙️",
+                "plur_abbr": "⚙️"
+            },
+            "sellable": true,
+            "total_quantity": 200
         }
     },
     "users": {
+        "0": {
+            "wallet": {
+                "4a59bc40-b474-4625-b06a-acec9d4f424f": 100,
+                "24f6bab7-8f26-4bda-9e88-76b5b5d00255": 1,
+                "59bb9c6f-a67b-4759-bc25-3d3dcdb49d51": 10
+            }
+        },
         "6ca26e4a9685fc77648de7aee77767b8": {
             "wallet": {
-                "24f6bab7-8f26-4bda-9e88-76b5b5d00255": 1,
-                "59bb9c6f-a67b-4759-bc25-3d3dcdb49d51": 1000000
+                "59bb9c6f-a67b-4759-bc25-3d3dcdb49d51": 999990,
+                "4a59bc40-b474-4625-b06a-acec9d4f424f": 100
             }
         }
     },
+    "events": [
+        {
+            "type": "trade",
+            "timestamp": 1654619170904,
+            "data": {
+                "sender": "6ca26e4a9685fc77648de7aee77767b8",
+                "receiver": "0",
+                "sended": {
+                    "token": "4a59bc40-b474-4625-b06a-acec9d4f424f",
+                    "quantity": 100
+                },
+                "received": {
+                    "token": "59bb9c6f-a67b-4759-bc25-3d3dcdb49d51",
+                    "quantity": 10
+                }
+            }
+        },
+        {
+            "type": "trade",
+            "timestamp": 1654674843329,
+            "data": {
+                "sender": "6ca26e4a9685fc77648de7aee77767b8",
+                "receiver": "0",
+                "sended": {
+                    "token": "4a59bc40-b474-4625-b06a-acec9d4f424f",
+                    "quantity": 100
+                },
+                "received": {
+                    "token": "59bb9c6f-a67b-4759-bc25-3d3dcdb49d51",
+                    "quantity": 10
+                }
+            }
+        }
+    ],
     "categories": [
         {
             "name": "Classiques",
@@ -101,6 +157,12 @@
                     "required": false
                 }
             ],
+            "perms": "everyone"
+        },
+        {
+            "name": "market",
+            "description": "Affiche les tokens disponibles à l'achat",
+            "options": [],
             "perms": "everyone"
         },
         {
