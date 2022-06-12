@@ -1,74 +1,17 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton } from 'discord.js';
 import { get_main_color, get_token, get_str_amount } from '../../bot.js';
-
-var MAX_ELEMENTS = 10;
+import { get_message } from '../../libs/Interface.js';
 
 export const data = new SlashCommandBuilder()
-	.setName('market')
-	.setDescription('Affiche les tokens disponibles à l\'achat');
+    .setName('market')
+    .setDescription('Affiche les tokens disponibles à l\'achat');
 export async function execute(interaction, config, db) {
-	await interaction.deferReply();
+    await interaction.deferReply();
 
     let color = get_main_color();
-    let embed = new MessageEmbed()
-        .setColor(color)
-        .setTitle('Market')
     
-    let menu_opts = [];
-    let ids = [];
-
-    let prefields = [];
-    let tokens = [];
-    for (let token_id in db.getData(`/tokens`)) {
-        let token = get_token(token_id);
-        if (token.available == 0) continue;
-        prefields.push({
-            name: get_str_amount(token.available, token.id),
-            value: `📉 COURS: ${get_str_amount(token.get_price(), "coins", true, true)} **|** 🧑‍💼 CRÉATEUR: ${(await interaction.client.users.fetch(token.data.creator)).username} **|** ${token.name.sing}`
-        });
-        tokens.push(token);
-        menu_opts.push({
-            label: token.name.sing,
-            value: ids.length.toString()
-        });
-        ids.push(token.id);
-    }
-    let select_menu = new MessageActionRow();
-    let buttons = new MessageActionRow();
-    let components = [];
-    if (prefields.length == 0) {
-        embed.setDescription('Aucun token disponible à l\'achat.');
-        await interaction.editReply({ embeds: [embed] });
-        return;
-    }
-    let page = 1;
-    if (prefields.length > MAX_ELEMENTS) {
-        embed.addFields(prefields.slice(0, MAX_ELEMENTS));
-        select_menu.addComponents(
-            new MessageSelectMenu()
-                .setCustomId('select_token')
-                .setPlaceholder('Choisissez un token')
-                .setOptions(menu_opts.slice(0, MAX_ELEMENTS))
-        );
-        buttons.addComponents(
-            new MessageButton()
-                .setCustomId('next_page')
-                .setEmoji('➡')
-                .setStyle('PRIMARY')
-        );
-        components.push(select_menu, buttons);
-    } else {
-        embed.addFields(prefields);
-        select_menu.addComponents(
-            new MessageSelectMenu()
-                .setCustomId('select_token')
-                .setPlaceholder('Choisissez un token')
-                .setOptions(menu_opts)
-        );
-        components.push(select_menu);
-    }
-    await interaction.editReply({ embeds: [embed], components: components });
+    await interaction.editReply(get_message(interaction.client, config, db, 'general_market', color));
     let msg = await interaction.fetchReply();
     let button_listener = async comp_interact => {
         if ((!comp_interact.isButton()) && (!comp_interact.isSelectMenu())) return;
@@ -111,8 +54,7 @@ export async function execute(interaction, config, db) {
                 break;
             case 'select_token':
                 let token = get_token(ids[comp_interact.values[0]]);
-                msg.edit({ components: [] });
-                comp_interact.update(await token.get_main_message(color));
+                await token.send_main_message(comp_interact, true, color);
                 break;
         }
     }

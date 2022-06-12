@@ -3,8 +3,8 @@ import { MessageEmbed } from 'discord.js';
 import { get_user, get_main_color, get_token, get_str_amount } from '../../bot.js';
 
 export const data = new SlashCommandBuilder()
-	.setName('wallet')
-	.setDescription('Affiche le portefeuille de l\'utilisateur')
+    .setName('wallet')
+    .setDescription('Affiche le portefeuille de l\'utilisateur')
     .addUserOption(opt=>
         opt
             .setName('user')
@@ -12,7 +12,7 @@ export const data = new SlashCommandBuilder()
             .setRequired(false)
     )
 export async function execute(interaction, config, db) {
-	await interaction.deferReply();
+    await interaction.deferReply();
     let opt = {
         user: interaction.options.getUser('user') || interaction.user
     }

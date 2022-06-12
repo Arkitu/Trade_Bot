@@ -61,6 +61,14 @@
             }
         }
     },
+    "markets": [
+        {
+            "author_id": "694235386658160760",
+            "token": "4a59bc40-b474-4625-b06a-acec9d4f424f",
+            "quantity": 20,
+            "price": 30
+        }
+    ],
     "events": [
         {
             "type": "trade",
